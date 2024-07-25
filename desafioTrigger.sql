@@ -1,0 +1,60 @@
+--		TRIGGER EXERCISES
+
+--		EXERCISE 1
+
+-- Criando a tabela que será populada pela Trigger
+--CREATE DATABASE db_da_kau
+
+--USE Aula
+
+--CREATE TABLE LogNovo (
+--Data DATETIME,
+--Operacao VARCHAR(50),  -- "Inserção"
+--Observacao VARCHAR(255) -- "Inserido Pessoa (Nome)"
+--PRIMARY KEY (Data, Operacao))  -- Os dois juntos são a Primary Key
+
+--CREATE TRIGGER trLog
+--ON dbo.Pessoa
+--AFTER INSERT AS
+--BEGIN
+--	INSERT INTO Log VALUES
+--	(GETDATE(), 'Inserção', 'Inserido Pessoa ' + (SELECT Pessoa.Nome FROM inserted Pessoa))
+--END
+
+--INSERT INTO Pessoa VALUES ('123@@', 'Pedrinho', 'Aluno')
+
+--SELECT * FROM Log
+
+--		EXERCISE 2
+
+--USE muitos_dados_omg
+
+ALTER TRIGGER trDeleteAllRegisters
+ON dbo.TABELA_DE_CLIENTES
+INSTEAD OF DELETE AS
+BEGIN 
+	
+	DELETE FROM dbo.ITENS_NOTAS_FISCAIS WHERE ITENS_NOTAS_FISCAIS.NUMERO IN
+
+	(
+		SELECT NUMERO
+		FROM NOTAS_FISCAIS 
+		WHERE NOTAS_FISCAIS.CPF = (SELECT CPF FROM deleted)
+	)
+
+	DELETE FROM dbo.NOTAS_FISCAIS WHERE NOTAS_FISCAIS.CPF IN
+
+	(
+		SELECT NOTAS_FISCAIS.CPF
+		FROM deleted
+		WHERE NOTAS_FISCAIS.CPF = deleted.CPF
+	)
+
+	DELETE FROM TABELA_DE_CLIENTES WHERE TABELA_DE_CLIENTES.CPF IN (SELECT CPF FROM deleted)
+
+	
+END
+
+SELECT * FROM TABELA_DE_CLIENTES
+
+DELETE FROM TABELA_DE_CLIENTES WHERE TABELA_DE_CLIENTES.CPF = '1471156710'
