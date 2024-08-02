@@ -1,0 +1,28 @@
+CREATE DATABASE ex5_prova;
+
+USE ex5_prova;
+
+CREATE TABLE Pessoa (
+	
+	IDPessoa INT PRIMARY KEY AUTO_INCREMENT, 
+    Nome VARCHAR(30),
+	IDEndereco INT,
+    FOREIGN KEY (IDEndereco) REFERENCES Endereco(IDEndereco)
+    
+);
+
+CREATE TABLE Endereco (
+	
+	IDEndereco INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
+    Cidade VARCHAR(30) NOT NULL, 
+    Estado VARCHAR(2) NOT NULL
+);
+
+CREATE TABLE Telefone (
+
+	IDTelefone INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
+    Telefone VARCHAR(15), 
+    IDPessoa INT,
+	FOREIGN KEY (IDPessoa) REFERENCES Pessoa(IDPessoa)
+);
+
